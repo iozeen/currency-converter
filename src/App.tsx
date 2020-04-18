@@ -6,18 +6,17 @@ import {
   Redirect,
   NavLink,
 } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 import CurrencyConverter from './pages/CurrencyConverter';
 import Currencies from './pages/Currencies';
+import AppBar from './components/AppBar';
 
 function App() {
   return (
     <Router>
       <div>
-        <nav>
-          <NavLink to="/">Currency converter</NavLink>
-          <NavLink to="/currencies">Currencies</NavLink>
-        </nav>
+        <AppBar />
         <Switch>
           <Route exact path="/">
             <CurrencyConverter />
