@@ -1,34 +1,40 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { useDispatch } from 'react-redux';
-import { getCurrencies } from './actions/currencies';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  NavLink,
+} from 'react-router-dom';
+
+import CurrencyConverter from './pages/CurrencyConverter';
+import Currencies from './pages/Currencies';
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getCurrencies());    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <NavLink to="/">Currency converter</NavLink>
+          <NavLink to="/currencies">Currencies</NavLink>
+        </nav>
+        <Switch>
+          <Route exact path="/">
+            <CurrencyConverter />
+          </Route>
+          <Route path="/currencies">
+            <Currencies />
+          </Route>
+          <Route path="*">
+            <Redirect
+              to={{
+                pathname: '/',
+              }}
+            />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

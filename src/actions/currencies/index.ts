@@ -1,9 +1,9 @@
-import { CURRENCIES } from "../actionTypes";
+import { CURRENCIES } from '../actionTypes';
 
 const getCurrencies = () => ({
-  type: CURRENCIES.GET_CURRENCIES
+  type: CURRENCIES.GET_CURRENCIES,
 });
 
 export {
-  getCurrencies
-}
+  getCurrencies,
+};
