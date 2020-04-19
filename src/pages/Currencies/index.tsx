@@ -1,18 +1,32 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { getCurrencies } from '../../actions/currencies';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
+import { StoreState } from '../../helpers/types';
+import { setBaseCurrency } from '../../actions/currencies';
+
+import CurrenciesTable from '../../components/CurrenciesTable';
 
 function Currencies() {
   const dispatch = useDispatch();
+  const { baseCurrency, ids } = useSelector(({ currencies: state }: StoreState) => state);
 
-  useEffect(() => {
-    dispatch(getCurrencies());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    dispatch(setBaseCurrency(event.target.value as string));
+  };
 
   return (
-    <div>Currency</div>
+    <div>
+      <Select
+        value={baseCurrency}
+        onChange={handleChange}
+      >
+        {ids.map((key) => <MenuItem key={key} value={key}>{key}</MenuItem>)}
+      </Select>
+      <CurrenciesTable />
+    </div>
   );
 }
 

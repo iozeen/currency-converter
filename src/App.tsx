@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-  NavLink,
 } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
 
+import { useDispatch } from 'react-redux';
 import CurrencyConverter from './pages/CurrencyConverter';
 import Currencies from './pages/Currencies';
 import AppBar from './components/AppBar';
+import { getCurrencies } from './actions/currencies';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrencies());
+  }, []);
+
   return (
     <Router>
       <div>
