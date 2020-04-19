@@ -1,11 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+const tabsList = [
+  { label: 'Currency converter', to: '/' },
+  { label: 'Currencies', to: '/currencies' },
+];
+
 function AppBarComponent() {
-  const [value, setValue] = React.useState(0);
+  const { pathname } = useLocation();
+  const initialTabValue = pathname
+    ? tabsList
+      .map(({ to }) => to)
+      .indexOf(pathname)
+    : 0;
+  const [value, setValue] = React.useState(initialTabValue);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -19,8 +30,7 @@ function AppBarComponent() {
         indicatorColor="primary"
         centered
       >
-        <Tab label="Currency converter" component={Link} to="/" />
-        <Tab label="Currencies" component={Link} to="/currencies" />
+        {tabsList.map(({ label, to }) => <Tab key={to} label={label} component={Link} to={to} />)}
       </Tabs>
     </AppBar>
   );
