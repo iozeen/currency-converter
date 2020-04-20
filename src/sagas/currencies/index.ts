@@ -1,13 +1,15 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { CURRENCIES } from '../../actions/actionTypes';
 import normalizeCurrencies from '../../helpers/normalizeCurrencies';
-import { getCurrenciesSucccess, getCurrenciesError, setFavoriteSuccess, setFavoriteIds } from '../../actions/currencies';
+import { getCurrenciesSucccess, getCurrenciesError, setFavoriteSuccess, setFavoriteIds, setBaseCurrency } from '../../actions/currencies';
 import { StoreState, ActionShape } from '../../helpers/types';
+import getCurrencyByLanguage from '../../helpers/getCurrencyByLanguage';
 
-export const fetchCurrencies = (): Promise<Response> => fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+export const fetchCurrencies = (): Promise<Response> => fetch(process.env.REACT_APP_API as string);
 
 function* fetchCurrenciesWorker(): Generator<any, void, any> {
   const favIds = JSON.parse(localStorage.getItem('favIds') as string);
+  const { language = 'uk' } = window.navigator;
 
   if (favIds) {
     yield put(setFavoriteIds(favIds));
@@ -21,6 +23,7 @@ function* fetchCurrenciesWorker(): Generator<any, void, any> {
     const result = normalizeCurrencies(yield response.json());
 
     yield put(getCurrenciesSucccess(result));
+    yield put(setBaseCurrency(getCurrencyByLanguage(language)));
   } catch (error) {
     yield put(getCurrenciesError());
   }

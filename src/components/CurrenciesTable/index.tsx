@@ -51,7 +51,7 @@ function CurrenciesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {ids.length > 1 ? list.map((key) => (
+          {baseCurrency && ids.length > 1 ? list.map((key) => (
             <TableRow key={key}>
               <TableCell component="th" scope="row" className={classes.colWidth}>
                 {key}

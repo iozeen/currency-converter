@@ -3,7 +3,7 @@ import { ActionShape, CurrencyState, UAH } from '../../helpers/types';
 
 const initialState: CurrencyState = {
   currencies: { buy: { [UAH]: '1' }, sale: { [UAH]: '1' } },
-  baseCurrency: UAH,
+  baseCurrency: '',
   ids: [UAH],
   favIds: [],
 };

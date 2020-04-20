@@ -5,8 +5,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import SwapVert from '@material-ui/icons/SwapVert';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { IconButton } from '@material-ui/core';
+
 import { StoreState } from '../../helpers/types';
 import getFormattedRate from '../../helpers/getFormattedRate';
 import CurrencyInput from '../../components/CurrencyInput';
@@ -19,7 +20,7 @@ function CurrencyConverter() {
   const { currencies, baseCurrency, ids } = useSelector(({ currencies: currState }: StoreState) => currState);
   const [isSale, setIsSale] = useState(false);
   const [inputState, setInputState] = useState({ primary: '', secondary: '' } as CurrencyConverterState);
-  const [state, setState] = useState({ primary: baseCurrency as string, secondary: '' } as CurrencyConverterState);
+  const [state, setState] = useState({ primary: '', secondary: '' } as CurrencyConverterState);
 
   const saleKey = isSale ? 'sale' : 'buy';
   const getInvertedId = (stateObj: CurrencyConverterState, id: string): string => Object.keys(stateObj).filter((key) => key !== id)[0];
@@ -71,10 +72,16 @@ function CurrencyConverter() {
   }, [state, isSale]);
 
   useEffect(() => {
-    if (ids.length > 1) {
-      setState({ ...state, secondary: ids.filter((id) => id !== state.primary)[0] });
-    }
-  }, [ids]);
+    setState({ primary: baseCurrency, secondary: ids.filter((id) => id !== baseCurrency)[0] });
+  }, [ids, baseCurrency]);
+
+  if (!baseCurrency) {
+    return (
+      <Grid container justify="center" alignItems="center" spacing={2} style={{ height: '20vh' }}>
+        <CircularProgress />
+      </Grid>
+    );
+  }
 
   return (
     <Grid container justify="center" spacing={2}>
@@ -90,7 +97,7 @@ function CurrencyConverter() {
           label={isSale ? 'Sale' : 'Buy'}
         />
       </Grid>
-      <Grid container spacing={2} justify="center">
+      <Grid container justify="center">
         <CurrencyInput
           keyId="primary"
           inputState={inputState}
