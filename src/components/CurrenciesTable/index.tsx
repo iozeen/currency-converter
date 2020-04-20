@@ -22,6 +22,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  colWidth: {
+    width: '30%',
+  },
 });
 
 function CurrenciesTable() {
@@ -34,27 +37,28 @@ function CurrenciesTable() {
   const handleClick = (key: string) => () => dispatch(setFavorite(key));
 
   const list = [...favIds, ...ids.filter((id) => !favIds.includes(id))];
+  const getRate = (key: string, trade: string): number => Number(currencies[trade][key]) / Number(currencies[trade][baseCurrency]);
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Currencies</TableCell>
-            <TableCell align="right">Buy</TableCell>
-            <TableCell align="right">Sale</TableCell>
-            <TableCell />
+            <TableCell className={classes.colWidth}>Currencies</TableCell>
+            <TableCell className={classes.colWidth}>Buy</TableCell>
+            <TableCell className={classes.colWidth}>Sale</TableCell>
+            <TableCell size="small" />
           </TableRow>
         </TableHead>
         <TableBody>
           {ids.length > 1 ? list.map((key) => (
             <TableRow key={key}>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" className={classes.colWidth}>
                 {key}
               </TableCell>
-              <TableCell align="right">{getFormattedRate(currencies.buy[key], currencies.buy[baseCurrency])}</TableCell>
-              <TableCell align="right">{getFormattedRate(currencies.sale[key], currencies.sale[baseCurrency])}</TableCell>
-              <TableCell align="right">
+              <TableCell className={classes.colWidth}>{getFormattedRate(getRate(key, 'buy'))}</TableCell>
+              <TableCell className={classes.colWidth}>{getFormattedRate(getRate(key, 'sale'))}</TableCell>
+              <TableCell size="small">
                 <IconButton onClick={handleClick(key)}>
                   {favIds.includes(key) ? <FavIcon /> : <FavIconBorder />}
                 </IconButton>
