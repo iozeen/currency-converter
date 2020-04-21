@@ -6,6 +6,6 @@ const languages = {
 } as {[key: string]: string};
 
 export default (lang: string): string => {
-  const shortLang = lang.slice(0, 2);
+  const shortLang = lang?.slice(0, 2);
   return languages[shortLang] || languages.fallback;
 };
